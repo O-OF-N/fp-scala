@@ -35,6 +35,7 @@ object List {
     case _                             => l
   }
 
+  // O(N^2)
   def init[A](l: List[A]): List[A] = {
     @annotation.tailrec
     def loop(input: List[A], output: List[A]): List[A] = input match {
@@ -42,6 +43,17 @@ object List {
       case _                        => output
     }
     loop(l, Nil)
+  }
+
+  // O(N)
+  // However this method is not tail rec.
+  def init1[A](l: List[A]): List[A] = {
+    def loop(input: List[A]): List[A] = input match {
+      case Nil          => Nil
+      case Cons(_, Nil) => Nil
+      case Cons(h, t)   => Cons(h, loop(t))
+    }
+    loop(l)
   }
 
   def apply[A](l: A*): List[A] = {
@@ -67,4 +79,6 @@ object Main extends App {
 
   println(List.init(l1))
   println(List.init(l2))
+  println(List.init1(l1))
+  println(List.init1(l2))
 }
